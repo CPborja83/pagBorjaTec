@@ -1,0 +1,104 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('imagen.jpg'); /* Cambia esta URL por la URL de tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Header */
+header h1 {
+    margin: 0;
+}
+
+/* Título grande */
+h1 {
+    font-size: 2.5em;
+    color: #fbf9f9;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Contenedor Principal */
+main {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilo de la búsqueda */
+#busqueda {
+    margin-bottom: 40px;
+}
+
+#busqueda .row {
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilo de los productos */
+#product-list {
+    margin-top: 20px;
+}
+
+.product {
+    background-color: white;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.product h3 {
+    margin-top: 0;
+}
+
+/* Estilo de contacto */
+#contacto form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#contacto button {
+    margin-top: 10px;
+}
+
+.contacto {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con 80% de opacidad */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Cambiado de 90% a 80% */
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo del pie de página */
+footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .product {
+        width: 100%;
+    }
+}

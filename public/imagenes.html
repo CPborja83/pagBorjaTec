@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Imágenes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .product {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+        }
+        .btn-cargar {
+            margin-top: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Gestión de Productos</h1>
+
+        <!-- Filtros de productos -->
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" id="nombreInput" class="form-control" placeholder="Buscar por nombre" oninput="obtenerProductos()">
+            </div>
+            <div class="col-md-6">
+                <select id="categoriaSelect" class="form-control" onchange="obtenerProductos()">
+                    <option value="todos">Todas las categorías</option>
+                    <option value="navidad">Navidad</option>
+                    <option value="dia_cariño">Día del Cariño</option>
+                    <option value="baños">Baños</option>
+                    <option value="casas">Casas</option>
+                    <option value="equipo_medico">Equipo Médico</option>
+                    <option value="productos_limpieza">Productos de Limpieza</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Listado de productos -->
+        <div id="product-list" class="row mt-4">
+            <!-- Los productos se mostrarán aquí dinámicamente -->
+        </div>
+
+        <h2 class="mt-5 text-center">Cargar Imágenes</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="imagen">Seleccionar imagen:</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Cargar Imagen</button>
+        </form>
+
+        <h2 class="mt-5">Imágenes Cargadas</h2>
+        <div id="imagenesList" class="imagenes-list">
+            <!-- Las imágenes se cargarán aquí -->
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Creado por Christian Borja UMG 2024</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Función para mostrar los productos en la tabla y agregar imágenes
+        function obtenerProductos() {
+            const nombreInput = document.getElementById("nombreInput").value.toLowerCase();
+            const categoriaSelect = document.getElementById("categoriaSelect").value;
+            const productList = document.getElementById("product-list");
+
+            // Filtramos los productos
+            const productosFiltrados = productos.filter(producto => {
+                const nombreCoincide = producto.nombre.toLowerCase().includes(nombreInput);
+                const categoriaCoincide = categoriaSelect === "todos" || producto.categoria === categoriaSelect;
+                return nombreCoincide && categoriaCoincide;
+            });
+
+            // Limpiamos la lista de productos
+            productList.innerHTML = "";
+
+            // Si hay productos, los mostramos en la tabla
+            if (productosFiltrados.length > 0) {
+                productosFiltrados.forEach(producto => {
+                    const divProducto = document.createElement("div");
+                    divProducto.classList.add("col-md-4");
+                    divProducto.classList.add("mb-4");
+                    divProducto.innerHTML = `
+                        <div class="product">
+                            <img src="${producto.imagen}" alt="${producto.nombre}">
+                            <h3>${producto.nombre}</h3>
+                            <p>${producto.descripcion}</p>
+                            <p><strong>Precio:</strong> ${producto.precio}</p>
+                            <button class="btn btn-success btn-cargar" onclick="agregarImagen('${producto.nombre}')">Seleccionar imagen</button>
+                        </div>
+                    `;
+                    productList.appendChild(divProducto);
+                });
+            } else {
+                productList.innerHTML = "<p>No se encontraron productos.</p>";
+            }
+        }
+
+        // Función para manejar el formulario de carga de imagen
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+            const imagenInput = document.getElementById("imagen");
+            const imagenUrl = URL.createObjectURL(imagenInput.files[0]);
+
+            // Aquí deberías cargar la imagen a tu servidor y asociarla al producto
+            const productoSeleccionado = document.querySelector(".btn-cargar").parentElement.querySelector("h3").textContent;
+
+            // Puedes modificar el producto para que guarde la imagen correspondiente
+            const producto = productos.find(p => p.nombre === productoSeleccionado);
+            if (producto) {
+                producto.imagen = imagenUrl; // Asignamos la URL de la imagen al producto
+                console.log(`Imagen cargada para ${producto.nombre}`);
+            }
+
+            // Limpiar el formulario
+            document.getElementById("uploadForm").reset();
+            alert("¡Imagen cargada exitosamente!");
+
+            obtenerProductos(); // Refrescar la lista de productos
+        });
+
+        // Función para agregar imagen al producto seleccionado
+        function agregarImagen(nombreProducto) {
+            const producto = productos.find(p => p.nombre === nombreProducto);
+            if (producto) {
+                document.getElementById("imagenesList").innerHTML = `
+                    <div class="col-md-4">
+                        <img src="${producto.imagen}" alt="${producto.nombre}" class="img-fluid">
+                    </div>
+                `;
+            }
+        }
+
+        // Evento para mostrar los productos cuando se cargue la página
+        window.addEventListener("DOMContentLoaded", obtenerProductos);
+    </script>
+</body>
+</html>
